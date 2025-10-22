@@ -1,0 +1,124 @@
+:root {
+	/* Absolute black & white */
+	--color-black: #000000;
+	--color-white: #ffffff;
+
+	/* Gray ramp via opacity on black */
+	--color-gray-04: rgba(0, 0, 0, 0.04);
+	--color-gray-08: rgba(0, 0, 0, 0.08);
+	--color-gray-12: rgba(0, 0, 0, 0.12);
+	--color-gray-20: rgba(0, 0, 0, 0.2);
+	--color-gray-40: rgba(0, 0, 0, 0.4);
+	--color-gray-60: rgba(0, 0, 0, 0.6);
+
+	/* Typography scale */
+	--text-xs: 11px;
+	--text-sm: 12px;
+	--text-base: 14px;
+	--text-lg: 16px;
+	--text-xl: 20px;
+	--text-2xl: 24px;
+	--text-3xl: 32px;
+
+	/* Font weights */
+	--font-normal: 400;
+	--font-medium: 500;
+	--font-semibold: 600;
+
+	/* Line heights */
+	--leading-tight: 1.1;
+	--leading-normal: 1.4;
+	--leading-relaxed: 1.6;
+
+	/* Tracking */
+	--tracking-tight: -0.02em;
+	--tracking-normal: 0;
+	--tracking-wide: 0.02em;
+	--tracking-wider: 0.04em;
+
+	/* Spacing (4px grid) */
+	--space-0: 0;
+	--space-1: 4px;
+	--space-2: 8px;
+	--space-3: 12px;
+	--space-4: 16px;
+	--space-5: 20px;
+	--space-6: 24px;
+	--space-7: 28px;
+	--space-8: 32px;
+	--space-10: 40px;
+	--space-12: 48px;
+	--space-16: 64px;
+	--space-20: 80px;
+	--space-24: 96px;
+
+	/* Borders */
+	--border-width: 1px;
+	--border-width-2: 2px;
+	--border-width-3: 3px;
+	--border-width-4: 4px;
+
+	/* Radius - ZERO ROUND POLICY */
+	--radius-0: 0;
+	--radius-none: 0;
+	--radius-sm: 0;
+	--radius-md: 0;
+	--radius-lg: 0;
+	--radius-full: 0;
+
+	/* Shadows - None for industrial look */
+	--shadow-none: none;
+	--shadow-sm: none;
+	--shadow-md: none;
+	--shadow-lg: none;
+
+	/* Focus ring */
+	--ring-width: 2px;
+	--ring-color-on-white: var(--color-black);
+	--ring-color-on-black: var(--color-white);
+
+	/* Motion */
+	--duration-fast: 100ms;
+	--duration-normal: 150ms;
+	--duration-slow: 250ms;
+	--easing-linear: linear;
+	--easing-ease: ease;
+
+	/* Layout */
+	--sidebar-width: 240px;
+	--header-height: 48px;
+	--row-height: 36px;
+	--input-height: 32px;
+
+	/* Z-index scale */
+	--z-base: 0;
+	--z-dropdown: 10;
+	--z-sticky: 20;
+	--z-overlay: 30;
+	--z-modal: 40;
+	--z-toast: 50;
+	--z-tooltip: 60;
+
+	/* Status indicators (text-based) */
+	--status-operating: '■';
+	--status-charging: '▢';
+	--status-idle: '⬚';
+	--status-warning: '▲';
+	--status-error: '✖';
+	--status-maintenance: '[MAINT]';
+
+	/* ASCII progress characters */
+	--progress-empty: '░';
+	--progress-filled: '█';
+	--progress-partial: '▒';
+
+	/* Sort indicators */
+	--sort-asc: '▲';
+	--sort-desc: '▼';
+	--sort-neutral: '━';
+
+	/* Connection indicators */
+	--conn-active: '●';
+	--conn-inactive: '○';
+	--conn-loading: '◐';
+}
