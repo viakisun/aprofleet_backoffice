@@ -1,0 +1,1086 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>APRO BackOffice - Golf Course Management</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Inter', sans-serif;
+            background-color: #ffffff;
+            color: #000000;
+            line-height: 1.5;
+        }
+        
+        .container {
+            display: flex;
+            min-height: 100vh;
+        }
+        
+        /* Sidebar */
+        .sidebar {
+            width: 240px;
+            border-right: 1px solid #e5e5e5;
+            padding: 24px;
+            background: #fafafa;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 32px;
+        }
+        
+        .logo-icon {
+            width: 32px;
+            height: 32px;
+            background-color: #000000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 12px;
+            font-weight: 700;
+        }
+        
+        .logo-text {
+            font-size: 18px;
+            font-weight: 600;
+            letter-spacing: -0.02em;
+        }
+        
+        .nav-section {
+            margin-bottom: 32px;
+        }
+        
+        .nav-title {
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: #999999;
+            margin-bottom: 12px;
+        }
+        
+        .nav-item {
+            display: flex;
+            align-items: center;
+            padding: 8px 12px;
+            margin-bottom: 4px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            font-size: 14px;
+            gap: 8px;
+        }
+        
+        .nav-item:hover {
+            background-color: #eeeeee;
+        }
+        
+        .nav-item.active {
+            background-color: #000000;
+            color: #ffffff;
+        }
+        
+        .nav-icon {
+            width: 16px;
+            height: 16px;
+            opacity: 0.6;
+        }
+        
+        .nav-item.active .nav-icon {
+            opacity: 1;
+        }
+        
+        /* Main Content */
+        .main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .header {
+            border-bottom: 1px solid #e5e5e5;
+            padding: 20px 32px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: white;
+        }
+        
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+        }
+        
+        .page-title {
+            font-size: 24px;
+            font-weight: 600;
+            letter-spacing: -0.02em;
+        }
+        
+        .header-actions {
+            display: flex;
+            gap: 12px;
+        }
+        
+        .btn {
+            padding: 8px 16px;
+            font-size: 14px;
+            font-weight: 500;
+            border: 1px solid #e5e5e5;
+            background: white;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .btn:hover {
+            background-color: #f5f5f5;
+        }
+        
+        .btn-primary {
+            background-color: #000000;
+            color: white;
+            border: none;
+        }
+        
+        .btn-primary:hover {
+            background-color: #333333;
+        }
+        
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+        
+        .search-box {
+            position: relative;
+        }
+        
+        .search-input {
+            padding: 8px 12px 8px 32px;
+            border: 1px solid #e5e5e5;
+            width: 300px;
+            font-size: 14px;
+        }
+        
+        .search-icon {
+            position: absolute;
+            left: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #999;
+        }
+        
+        /* Content Area */
+        .content {
+            padding: 32px;
+            flex: 1;
+            overflow-y: auto;
+            background: #f8f8f8;
+        }
+        
+        /* Filter Bar */
+        .filter-bar {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 24px;
+            align-items: center;
+        }
+        
+        .filter-group {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+        
+        .filter-label {
+            font-size: 13px;
+            color: #666;
+        }
+        
+        .filter-select {
+            padding: 6px 12px;
+            border: 1px solid #e5e5e5;
+            background: white;
+            font-size: 13px;
+        }
+        
+        .filter-chips {
+            display: flex;
+            gap: 8px;
+            margin-left: auto;
+        }
+        
+        .chip {
+            padding: 6px 12px;
+            background: white;
+            border: 1px solid #e5e5e5;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .chip:hover {
+            background: #f5f5f5;
+        }
+        
+        .chip.active {
+            background: #000;
+            color: white;
+            border-color: #000;
+        }
+        
+        /* Card Grid */
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+            gap: 24px;
+            margin-bottom: 32px;
+        }
+        
+        .golf-card {
+            background: white;
+            border: 1px solid #e5e5e5;
+            padding: 24px;
+            cursor: pointer;
+            transition: all 0.2s;
+            position: relative;
+        }
+        
+        .golf-card:hover {
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            transform: translateY(-2px);
+        }
+        
+        .card-status {
+            position: absolute;
+            top: 24px;
+            right: 24px;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #22c55e;
+        }
+        
+        .card-status.warning {
+            background: #f59e0b;
+        }
+        
+        .card-status.error {
+            background: #ef4444;
+        }
+        
+        .card-status.inactive {
+            background: #999;
+        }
+        
+        .card-header {
+            margin-bottom: 16px;
+        }
+        
+        .golf-name {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+        
+        .golf-location {
+            font-size: 13px;
+            color: #666;
+        }
+        
+        .card-stats {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-bottom: 16px;
+            padding: 16px 0;
+            border-top: 1px solid #f5f5f5;
+            border-bottom: 1px solid #f5f5f5;
+        }
+        
+        .stat-item {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .stat-label {
+            font-size: 11px;
+            color: #999;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 4px;
+        }
+        
+        .stat-value {
+            font-size: 16px;
+            font-weight: 600;
+        }
+        
+        .card-info {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+        
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 13px;
+        }
+        
+        .info-label {
+            color: #666;
+        }
+        
+        .info-value {
+            font-weight: 500;
+        }
+        
+        .card-actions {
+            display: flex;
+            gap: 8px;
+        }
+        
+        .card-btn {
+            flex: 1;
+            padding: 8px;
+            font-size: 12px;
+            text-align: center;
+            border: 1px solid #e5e5e5;
+            background: white;
+            cursor: pointer;
+        }
+        
+        .card-btn:hover {
+            background: #f5f5f5;
+        }
+        
+        .card-btn.primary {
+            background: #000;
+            color: white;
+            border-color: #000;
+        }
+        
+        .card-btn.primary:hover {
+            background: #333;
+        }
+        
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .modal.show {
+            display: flex;
+        }
+        
+        .modal-content {
+            background: white;
+            width: 90%;
+            max-width: 600px;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        
+        .modal-header {
+            padding: 24px;
+            border-bottom: 1px solid #e5e5e5;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .modal-title {
+            font-size: 20px;
+            font-weight: 600;
+        }
+        
+        .modal-close {
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 20px;
+            color: #666;
+        }
+        
+        .modal-close:hover {
+            background: #f5f5f5;
+        }
+        
+        .modal-body {
+            padding: 24px;
+        }
+        
+        .form-section {
+            margin-bottom: 24px;
+        }
+        
+        .section-title {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #f5f5f5;
+        }
+        
+        .form-group {
+            margin-bottom: 16px;
+        }
+        
+        .form-label {
+            display: block;
+            font-size: 13px;
+            font-weight: 500;
+            margin-bottom: 6px;
+        }
+        
+        .required {
+            color: #ef4444;
+        }
+        
+        .form-input {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid #e5e5e5;
+            font-size: 14px;
+        }
+        
+        .form-input:focus {
+            outline: none;
+            border-color: #000;
+        }
+        
+        .form-select {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid #e5e5e5;
+            font-size: 14px;
+            background: white;
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+        
+        .modal-footer {
+            padding: 24px;
+            border-top: 1px solid #e5e5e5;
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+        }
+        
+        /* Table View */
+        .table-container {
+            background: white;
+            border: 1px solid #e5e5e5;
+            display: none;
+        }
+        
+        .table-container.show {
+            display: block;
+        }
+        
+        .table {
+            width: 100%;
+            font-size: 13px;
+        }
+        
+        .table th {
+            text-align: left;
+            padding: 12px 16px;
+            border-bottom: 2px solid #f5f5f5;
+            font-weight: 600;
+            color: #666;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        
+        .table td {
+            padding: 16px;
+            border-bottom: 1px solid #f5f5f5;
+        }
+        
+        .table tr:hover {
+            background: #fafafa;
+        }
+        
+        .view-toggle {
+            display: flex;
+            gap: 4px;
+            margin-left: auto;
+        }
+        
+        .toggle-btn {
+            padding: 6px 10px;
+            border: 1px solid #e5e5e5;
+            background: white;
+            cursor: pointer;
+        }
+        
+        .toggle-btn.active {
+            background: #000;
+            color: white;
+            border-color: #000;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="logo">
+                <div class="logo-icon">AP</div>
+                <span class="logo-text">APRO MFG</span>
+            </div>
+            
+            <nav>
+                <div class="nav-section">
+                    <div class="nav-title">총괄 관리</div>
+                    <div class="nav-item">
+                        <span class="nav-icon">📊</span>
+                        통합 대시보드
+                    </div>
+                    <div class="nav-item active">
+                        <span class="nav-icon">⛳</span>
+                        골프장 관리
+                    </div>
+                    <div class="nav-item">
+                        <span class="nav-icon">🚗</span>
+                        차량 현황
+                    </div>
+                    <div class="nav-item">
+                        <span class="nav-icon">📦</span>
+                        납품 관리
+                    </div>
+                </div>
+                
+                <div class="nav-section">
+                    <div class="nav-title">모델 관리</div>
+                    <div class="nav-item">
+                        <span class="nav-icon">📋</span>
+                        모델 목록
+                    </div>
+                    <div class="nav-item">
+                        <span class="nav-icon">🔄</span>
+                        펌웨어 관리
+                    </div>
+                    <div class="nav-item">
+                        <span class="nav-icon">📡</span>
+                        OTA 업데이트
+                    </div>
+                </div>
+            </nav>
+        </aside>
+        
+        <!-- Main Content -->
+        <div class="main">
+            <!-- Header -->
+            <header class="header">
+                <div class="header-left">
+                    <h1 class="page-title">골프장 관리</h1>
+                    <div class="header-actions">
+                        <button class="btn btn-primary" onclick="openModal()">+ 새 골프장 등록</button>
+                        <button class="btn">내보내기</button>
+                    </div>
+                </div>
+                
+                <div class="header-right">
+                    <div class="search-box">
+                        <span class="search-icon">🔍</span>
+                        <input type="text" class="search-input" placeholder="골프장 검색...">
+                    </div>
+                </div>
+            </header>
+            
+            <!-- Content -->
+            <main class="content">
+                <!-- Filter Bar -->
+                <div class="filter-bar">
+                    <div class="filter-group">
+                        <span class="filter-label">지역:</span>
+                        <select class="filter-select">
+                            <option>전체</option>
+                            <option>서울/경기</option>
+                            <option>강원</option>
+                            <option>충청</option>
+                            <option>경상</option>
+                            <option>전라</option>
+                            <option>제주</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <span class="filter-label">상태:</span>
+                        <select class="filter-select">
+                            <option>전체</option>
+                            <option>운영중</option>
+                            <option>점검중</option>
+                            <option>계약만료</option>
+                            <option>준비중</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <span class="filter-label">서비스:</span>
+                        <select class="filter-select">
+                            <option>전체</option>
+                            <option>Enterprise</option>
+                            <option>Professional</option>
+                            <option>Basic</option>
+                        </select>
+                    </div>
+                    
+                    <div class="view-toggle">
+                        <button class="toggle-btn active" onclick="showCardView()">카드</button>
+                        <button class="toggle-btn" onclick="showTableView()">테이블</button>
+                    </div>
+                </div>
+                
+                <!-- Card Grid -->
+                <div class="card-grid" id="cardView">
+                    <!-- Golf Course Card 1 -->
+                    <div class="golf-card">
+                        <div class="card-status"></div>
+                        <div class="card-header">
+                            <div class="golf-name">나인브릿지</div>
+                            <div class="golf-location">제주특별자치도 서귀포시</div>
+                        </div>
+                        <div class="card-stats">
+                            <div class="stat-item">
+                                <span class="stat-label">운영 차량</span>
+                                <span class="stat-value">48대</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">가동률</span>
+                                <span class="stat-value">98.2%</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">계약 상태</span>
+                                <span class="stat-value">활성</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">서비스 레벨</span>
+                                <span class="stat-value">Enterprise</span>
+                            </div>
+                        </div>
+                        <div class="card-info">
+                            <div class="info-row">
+                                <span class="info-label">계약 시작일</span>
+                                <span class="info-value">2023.03.15</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="info-label">계약 만료일</span>
+                                <span class="info-value">2026.03.14</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="info-label">관리자</span>
+                                <span class="info-value">김철수 (3명)</span>
+                            </div>
+                        </div>
+                        <div class="card-actions">
+                            <button class="card-btn">상세보기</button>
+                            <button class="card-btn primary">Admin 관리</button>
+                            <button class="card-btn">설정</button>
+                        </div>
+                    </div>
+                    
+                    <!-- Golf Course Card 2 -->
+                    <div class="golf-card">
+                        <div class="card-status"></div>
+                        <div class="card-header">
+                            <div class="golf-name">스카이72 GC</div>
+                            <div class="golf-location">인천광역시 중구</div>
+                        </div>
+                        <div class="card-stats">
+                            <div class="stat-item">
+                                <span class="stat-label">운영 차량</span>
+                                <span class="stat-value">72대</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">가동률</span>
+                                <span class="stat-value">95.1%</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">계약 상태</span>
+                                <span class="stat-value">활성</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">서비스 레벨</span>
+                                <span class="stat-value">Enterprise</span>
+                            </div>
+                        </div>
+                        <div class="card-info">
+                            <div class="info-row">
+                                <span class="info-label">계약 시작일</span>
+                                <span class="info-value">2022.06.01</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="info-label">계약 만료일</span>
+                                <span class="info-value">2025.05.31</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="info-label">관리자</span>
+                                <span class="info-value">이영희 (5명)</span>
+                            </div>
+                        </div>
+                        <div class="card-actions">
+                            <button class="card-btn">상세보기</button>
+                            <button class="card-btn primary">Admin 관리</button>
+                            <button class="card-btn">설정</button>
+                        </div>
+                    </div>
+                    
+                    <!-- Golf Course Card 3 -->
+                    <div class="golf-card">
+                        <div class="card-status warning"></div>
+                        <div class="card-header">
+                            <div class="golf-name">통도파인 CC</div>
+                            <div class="golf-location">경상남도 양산시</div>
+                        </div>
+                        <div class="card-stats">
+                            <div class="stat-item">
+                                <span class="stat-label">운영 차량</span>
+                                <span class="stat-value">42대</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">가동률</span>
+                                <span class="stat-value">88.7%</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">계약 상태</span>
+                                <span class="stat-value">갱신예정</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">서비스 레벨</span>
+                                <span class="stat-value">Professional</span>
+                            </div>
+                        </div>
+                        <div class="card-info">
+                            <div class="info-row">
+                                <span class="info-label">계약 시작일</span>
+                                <span class="info-value">2022.12.01</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="info-label">계약 만료일</span>
+                                <span class="info-value">2025.11.30</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="info-label">관리자</span>
+                                <span class="info-value">박민수 (2명)</span>
+                            </div>
+                        </div>
+                        <div class="card-actions">
+                            <button class="card-btn">상세보기</button>
+                            <button class="card-btn primary">Admin 관리</button>
+                            <button class="card-btn">설정</button>
+                        </div>
+                    </div>
+                    
+                    <!-- Golf Course Card 4 -->
+                    <div class="golf-card">
+                        <div class="card-status error"></div>
+                        <div class="card-header">
+                            <div class="golf-name">골든베이 GC</div>
+                            <div class="golf-location">충청남도 태안군</div>
+                        </div>
+                        <div class="card-stats">
+                            <div class="stat-item">
+                                <span class="stat-label">운영 차량</span>
+                                <span class="stat-value">38대</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">가동률</span>
+                                <span class="stat-value">72.3%</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">계약 상태</span>
+                                <span class="stat-value">점검중</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">서비스 레벨</span>
+                                <span class="stat-value">Professional</span>
+                            </div>
+                        </div>
+                        <div class="card-info">
+                            <div class="info-row">
+                                <span class="info-label">계약 시작일</span>
+                                <span class="info-value">2023.09.01</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="info-label">계약 만료일</span>
+                                <span class="info-value">2026.08.31</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="info-label">관리자</span>
+                                <span class="info-value">정대리 (2명)</span>
+                            </div>
+                        </div>
+                        <div class="card-actions">
+                            <button class="card-btn">상세보기</button>
+                            <button class="card-btn primary">Admin 관리</button>
+                            <button class="card-btn">설정</button>
+                        </div>
+                    </div>
+                    
+                    <!-- Golf Course Card 5 -->
+                    <div class="golf-card">
+                        <div class="card-status inactive"></div>
+                        <div class="card-header">
+                            <div class="golf-name">제주 CC (신규)</div>
+                            <div class="golf-location">제주특별자치도 제주시</div>
+                        </div>
+                        <div class="card-stats">
+                            <div class="stat-item">
+                                <span class="stat-label">운영 차량</span>
+                                <span class="stat-value">-</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">가동률</span>
+                                <span class="stat-value">-</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">계약 상태</span>
+                                <span class="stat-value">준비중</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">서비스 레벨</span>
+                                <span class="stat-value">Basic</span>
+                            </div>
+                        </div>
+                        <div class="card-info">
+                            <div class="info-row">
+                                <span class="info-label">계약 시작일</span>
+                                <span class="info-value">2025.01.01</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="info-label">계약 만료일</span>
+                                <span class="info-value">2028.12.31</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="info-label">관리자</span>
+                                <span class="info-value">미지정</span>
+                            </div>
+                        </div>
+                        <div class="card-actions">
+                            <button class="card-btn">상세보기</button>
+                            <button class="card-btn primary">초기 설정</button>
+                            <button class="card-btn">설정</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Table View (Hidden by default) -->
+                <div class="table-container" id="tableView">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>골프장명</th>
+                                <th>지역</th>
+                                <th>차량</th>
+                                <th>가동률</th>
+                                <th>계약상태</th>
+                                <th>서비스</th>
+                                <th>계약기간</th>
+                                <th>관리</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>나인브릿지</strong></td>
+                                <td>제주 서귀포</td>
+                                <td>48대</td>
+                                <td>98.2%</td>
+                                <td><span class="chip">활성</span></td>
+                                <td>Enterprise</td>
+                                <td>2023.03 - 2026.03</td>
+                                <td>
+                                    <button class="card-btn">관리</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><strong>스카이72 GC</strong></td>
+                                <td>인천 중구</td>
+                                <td>72대</td>
+                                <td>95.1%</td>
+                                <td><span class="chip">활성</span></td>
+                                <td>Enterprise</td>
+                                <td>2022.06 - 2025.05</td>
+                                <td>
+                                    <button class="card-btn">관리</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </main>
+        </div>
+    </div>
+    
+    <!-- Modal -->
+    <div class="modal" id="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">새 골프장 등록</h2>
+                <span class="modal-close" onclick="closeModal()">×</span>
+            </div>
+            <div class="modal-body">
+                <div class="form-section">
+                    <div class="section-title">기본 정보</div>
+                    <div class="form-group">
+                        <label class="form-label">골프장명 <span class="required">*</span></label>
+                        <input type="text" class="form-input" placeholder="골프장 이름을 입력하세요">
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">지역 <span class="required">*</span></label>
+                            <select class="form-select">
+                                <option>선택하세요</option>
+                                <option>서울/경기</option>
+                                <option>강원</option>
+                                <option>충청</option>
+                                <option>경상</option>
+                                <option>전라</option>
+                                <option>제주</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">홀 수</label>
+                            <select class="form-select">
+                                <option>18홀</option>
+                                <option>27홀</option>
+                                <option>36홀</option>
+                                <option>기타</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">주소 <span class="required">*</span></label>
+                        <input type="text" class="form-input" placeholder="상세 주소를 입력하세요">
+                    </div>
+                </div>
+                
+                <div class="form-section">
+                    <div class="section-title">계약 정보</div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">계약 시작일 <span class="required">*</span></label>
+                            <input type="date" class="form-input">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">계약 종료일 <span class="required">*</span></label>
+                            <input type="date" class="form-input">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">서비스 레벨 <span class="required">*</span></label>
+                            <select class="form-select">
+                                <option>Basic</option>
+                                <option>Professional</option>
+                                <option>Enterprise</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">차량 대수</label>
+                            <input type="number" class="form-input" placeholder="0">
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-section">
+                    <div class="section-title">관리자 계정</div>
+                    <div class="form-group">
+                        <label class="form-label">관리자 이름 <span class="required">*</span></label>
+                        <input type="text" class="form-input" placeholder="관리자 성명">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">이메일 <span class="required">*</span></label>
+                        <input type="email" class="form-input" placeholder="admin@golfclub.com">
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">연락처</label>
+                            <input type="tel" class="form-input" placeholder="010-0000-0000">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">직책</label>
+                            <input type="text" class="form-input" placeholder="매니저">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn" onclick="closeModal()">취소</button>
+                <button class="btn btn-primary">등록하기</button>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        function openModal() {
+            document.getElementById('modal').classList.add('show');
+        }
+        
+        function closeModal() {
+            document.getElementById('modal').classList.remove('show');
+        }
+        
+        function showCardView() {
+            document.getElementById('cardView').style.display = 'grid';
+            document.getElementById('tableView').classList.remove('show');
+            document.querySelectorAll('.toggle-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.toggle-btn')[0].classList.add('active');
+        }
+        
+        function showTableView() {
+            document.getElementById('cardView').style.display = 'none';
+            document.getElementById('tableView').classList.add('show');
+            document.querySelectorAll('.toggle-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.toggle-btn')[1].classList.add('active');
+        }
+        
+        // Admin 관리 버튼 클릭
+        document.querySelectorAll('.card-btn.primary').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                alert('Admin 관리 페이지로 이동');
+            });
+        });
+        
+        // 카드 클릭
+        document.querySelectorAll('.golf-card').forEach(card => {
+            card.addEventListener('click', function() {
+                const name = this.querySelector('.golf-name').textContent;
+                console.log(`Selected: ${name}`);
+            });
+        });
+    </script>
+</body>
+</html>
