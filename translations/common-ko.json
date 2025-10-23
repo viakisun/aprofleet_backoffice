@@ -1,0 +1,22 @@
+{
+  "roles": {
+    "super-admin": "슈퍼 관리자",
+    "manufacturer": "제조사",
+    "golf-course-admin": "골프장 관리자",
+    "maintenance-staff": "정비 직원",
+    "viewer": "뷰어"
+  },
+  "title": "APROFLEET 백오피스",
+  "subtitle": "사용자 가이드 및 참조",
+  "developedBy": "개발 및 제공",
+  "company": "VIASOFT.AI",
+  "generated": "생성 일자",
+  "copyright": "문서 © 2025 VIASOFT.AI",
+  "platform": "APROFLEET 플랫폼 by DY Innovate Corporation",
+  "tableOfContents": "목차",
+  "page": "페이지",
+  "of": "/",
+  "purpose": "목적",
+  "keyComponents": "주요 구성요소",
+  "roleSpecific": "역할별 기능"
+}

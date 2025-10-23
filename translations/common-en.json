@@ -1,0 +1,22 @@
+{
+  "roles": {
+    "super-admin": "Super Admin",
+    "manufacturer": "Manufacturer",
+    "golf-course-admin": "Golf Course Admin",
+    "maintenance-staff": "Maintenance Staff",
+    "viewer": "Viewer"
+  },
+  "title": "APROFLEET BACKOFFICE",
+  "subtitle": "User Guide & Reference",
+  "developedBy": "Developed and Presented by",
+  "company": "VIASOFT.AI",
+  "generated": "Generated",
+  "copyright": "Documentation © 2025 VIASOFT.AI",
+  "platform": "APROFLEET Platform by DY Innovate Corporation",
+  "tableOfContents": "TABLE OF CONTENTS",
+  "page": "Page",
+  "of": "of",
+  "purpose": "Purpose",
+  "keyComponents": "Key Components",
+  "roleSpecific": "Role-specific Features"
+}

@@ -1,0 +1,112 @@
+{
+  "Login": {
+    "purpose": "Secure authentication gateway for all users to access the APROFLEET BackOffice platform",
+    "components": [
+      "Email and password input fields",
+      "Login button with validation",
+      "Demo account quick login cards",
+      "Password recovery link"
+    ],
+    "roleSpecific": "Accessible to all roles with role-based credentials"
+  },
+  "Dashboard": {
+    "purpose": "Central hub providing overview of key metrics, quick actions, and recent activity",
+    "components": [
+      "Statistics cards (Total/Active Vehicles, Maintenance Alerts, Tenants)",
+      "Quick actions panel for common tasks",
+      "Tenant overview cards (multi-tenant roles)",
+      "Recent activity feed with real-time updates"
+    ],
+    "roleSpecific": "Super Admin sees all tenants; Golf Course Admin sees only their tenant data"
+  },
+  "Vehicles": {
+    "purpose": "Comprehensive fleet management interface for monitoring, tracking, and managing all vehicles",
+    "components": [
+      "Advanced filter panel (status, type, battery, location)",
+      "Vehicle list table with sortable columns",
+      "Bulk operations and actions",
+      "Vehicle details modal with full specifications"
+    ],
+    "roleSpecific": "Super Admin sees all vehicles across tenants; Others see only assigned vehicles"
+  },
+  "Reservations": {
+    "purpose": "Manage vehicle bookings and reservations for golf course operations",
+    "components": [
+      "Statistics cards (Scheduled, Active, Completed, Cancelled)",
+      "Reservations list table with filtering",
+      "Create/edit reservation forms",
+      "Calendar view with conflict detection"
+    ],
+    "roleSpecific": "Admin roles can create and manage; Viewers have read-only access"
+  },
+  "Maintenance": {
+    "purpose": "Comprehensive maintenance management system for tracking service requests and vehicle upkeep",
+    "components": [
+      "Service requests tab with priority indicators",
+      "Scheduled maintenance calendar",
+      "Service history with complete logs",
+      "Work order creation and assignment"
+    ],
+    "roleSpecific": "Maintenance Staff can update tasks; Admins have full CRUD access"
+  },
+  "Analytics": {
+    "purpose": "Data visualization and reporting platform for fleet performance insights",
+    "components": [
+      "Fleet overview with composition charts",
+      "Usage trends and patterns analysis",
+      "Maintenance analytics and costs",
+      "Performance metrics and efficiency data"
+    ],
+    "roleSpecific": "All roles have read access; Admins can generate custom reports"
+  },
+  "Tenants": {
+    "purpose": "Manage multiple golf course clients in the multi-tenant SaaS architecture",
+    "components": [
+      "Tenant cards grid with status indicators",
+      "Subscription tier management",
+      "Vehicle allocation and quotas",
+      "Billing and usage tracking"
+    ],
+    "roleSpecific": "Super Admin has full access; Manufacturer sees limited tenant data"
+  },
+  "Users": {
+    "purpose": "Manage user accounts, roles, permissions, and access control",
+    "components": [
+      "User list table with role filters",
+      "User creation and editing forms",
+      "Role assignment and permissions",
+      "Activity logs and session management"
+    ],
+    "roleSpecific": "Super Admin manages all users; Golf Course Admin manages tenant users only"
+  },
+  "Logs": {
+    "purpose": "Comprehensive system logging and monitoring interface for tracking application events",
+    "components": [
+      "Service-specific log tabs (API, Database, Redis, etc.)",
+      "Log level filtering (Error, Warning, Info, Debug)",
+      "Real-time log streaming",
+      "Advanced search and export capabilities"
+    ],
+    "roleSpecific": "Admin roles can access system logs; Limited access for other roles"
+  },
+  "API Documentation": {
+    "purpose": "Interactive API documentation and reference for developers",
+    "components": [
+      "RESTful endpoint listings with examples",
+      "Authentication and rate limiting guides",
+      "Request/response specifications",
+      "Interactive API testing interface"
+    ],
+    "roleSpecific": "Accessible to technical users and administrators for API integration"
+  },
+  "Settings": {
+    "purpose": "User-specific configuration for profile, display, notifications, and security",
+    "components": [
+      "Profile management and avatar upload",
+      "Display preferences (theme, language, timezone)",
+      "Notification settings (email, SMS, push)",
+      "Security settings (password, 2FA, sessions)"
+    ],
+    "roleSpecific": "All users can manage their own settings and preferences"
+  }
+}
