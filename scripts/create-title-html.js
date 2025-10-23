@@ -37,13 +37,13 @@ function createTitlePageHTML(lang, common) {
 
         body {
           font-family: 'Noto Sans ${lang === 'ko' ? 'KR' : lang === 'jp' ? 'JP' : ''}', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-          width: 420mm;
+          width: 210mm;
           height: 297mm;
           display: flex;
           flex-direction: column;
           justify-content: space-between;
           align-items: center;
-          padding: 60px;
+          padding: 40px;
           text-align: center;
           color: #000;
         }
@@ -59,39 +59,39 @@ function createTitlePageHTML(lang, common) {
         }
 
         h1 {
-          font-size: 48px;
+          font-size: 36px;
           font-weight: 500;
           letter-spacing: 0.5px;
         }
 
         .subtitle {
-          font-size: 18px;
+          font-size: 14px;
           color: #4d4d4d;
           font-weight: 300;
         }
 
         .company {
-          font-size: 24px;
-          margin-top: 20px;
+          font-size: 20px;
+          margin-top: 15px;
         }
 
         .developed-by {
-          font-size: 14px;
+          font-size: 12px;
           color: #666;
-          margin-bottom: 10px;
+          margin-bottom: 8px;
         }
 
         .generated {
-          font-size: 12px;
+          font-size: 11px;
           color: #808080;
-          margin-top: 20px;
+          margin-top: 15px;
           border-top: 1px solid #b3b3b3;
-          padding-top: 20px;
+          padding-top: 15px;
         }
 
         .footer {
           text-align: center;
-          font-size: 10px;
+          font-size: 9px;
           color: #999;
           line-height: 1.5;
         }
@@ -135,8 +135,7 @@ async function createTitlePageSampleFromHTML(lang) {
     const outputPath = path.join(OUTPUT_DIR, `title-page-html-${lang}.pdf`);
     await page.pdf({
       path: outputPath,
-      format: 'A3',
-      landscape: true,
+      format: 'A4',
       margin: {
         top: '20mm',
         right: '20mm',

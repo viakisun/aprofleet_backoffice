@@ -3,9 +3,12 @@ import { browser } from "$app/environment";
 import { goto } from "$app/navigation";
 
 export enum Role {
-  SUPER_ADMIN = "manufacturer",
+  SUPER_ADMIN = "super_admin",
+  MANUFACTURER = "manufacturer",
   TENANT_OWNER = "golf_course_owner",
   TENANT_MANAGER = "golf_course_manager",
+  MAINTENANCE_STAFF = "maintenance_staff",
+  VIEWER = "viewer",
   SYSTEM_ADMIN = "developer",
   OPERATION_STAFF = "staff",
 }
@@ -98,6 +101,10 @@ function createAuthStore() {
       { role: Role; name: string; tenantId?: string }
     > = {
       "admin@dyinnovate.com": { role: Role.SUPER_ADMIN, name: "DY Admin" },
+      "manufacturer@company.com": {
+        role: Role.MANUFACTURER,
+        name: "Manufacturer Rep",
+      },
       "owner@golfcourse.com": {
         role: Role.TENANT_OWNER,
         name: "Golf Course Owner",
@@ -106,6 +113,16 @@ function createAuthStore() {
       "manager@golfcourse.com": {
         role: Role.TENANT_MANAGER,
         name: "Golf Course Manager",
+        tenantId: "tenant-001",
+      },
+      "maintenance@golfcourse.com": {
+        role: Role.MAINTENANCE_STAFF,
+        name: "Maintenance Staff",
+        tenantId: "tenant-001",
+      },
+      "viewer@golfcourse.com": {
+        role: Role.VIEWER,
+        name: "Viewer User",
         tenantId: "tenant-001",
       },
       "dev@via.com": { role: Role.SYSTEM_ADMIN, name: "System Developer" },
@@ -166,6 +183,12 @@ function createAuthStore() {
   function getPermissionsByRole(role: Role): string[] {
     const permissions: Record<Role, string[]> = {
       [Role.SUPER_ADMIN]: ["*"],
+      [Role.MANUFACTURER]: [
+        "vehicle:read",
+        "maintenance:read",
+        "analytics:read",
+        "tenant:read",
+      ],
       [Role.TENANT_OWNER]: [
         "tenant:*",
         "vehicle:*",
@@ -173,6 +196,17 @@ function createAuthStore() {
         "customer:*",
       ],
       [Role.TENANT_MANAGER]: ["vehicle:*", "reservation:*", "customer:read"],
+      [Role.MAINTENANCE_STAFF]: [
+        "vehicle:read",
+        "maintenance:*",
+        "reservation:read",
+      ],
+      [Role.VIEWER]: [
+        "vehicle:read",
+        "reservation:read",
+        "maintenance:read",
+        "analytics:read",
+      ],
       [Role.SYSTEM_ADMIN]: ["system:*", "logs:*", "deployment:*"],
       [Role.OPERATION_STAFF]: [
         "vehicle:read",
