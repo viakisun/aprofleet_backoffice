@@ -2,7 +2,7 @@ import { chromium } from 'playwright';
 import path from 'path';
 import fs from 'fs';
 import { fileURLToPath } from 'url';
-import { PDFDocument, PDFPage, rgb } from 'pdf-lib';
+import { PDFDocument } from 'pdf-lib';
 import fontkit from '@pdf-lib/fontkit';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -13,11 +13,9 @@ const OUTPUT_DIR = path.join(__dirname, '../pdfs');
 const FONTS_DIR = path.join(__dirname, '../fonts');
 const TRANSLATIONS_DIR = path.join(__dirname, '../translations');
 
-// A4 dimensions in points (portrait and landscape)
-const A4_WIDTH = 595; // 210mm (portrait width / landscape height)
-const A4_HEIGHT = 842; // 297mm (portrait height / landscape width)
-const A4_LANDSCAPE_WIDTH = 842; // 297mm
-const A4_LANDSCAPE_HEIGHT = 595; // 210mm
+// A4 dimensions in points (no longer used - using HTML/CSS for layout)
+// const A4_WIDTH = 595; // 210mm (portrait width / landscape height)
+// const A4_HEIGHT = 842; // 297mm (portrait height / landscape width)
 
 // Role-based account configurations
 const ACCOUNTS = {
@@ -193,12 +191,6 @@ function loadTranslations(lang) {
   };
 }
 
-// Helper to center text
-function centerText(text, font, size, maxWidth) {
-  const textWidth = font.widthOfTextAtSize(text, size);
-  return (maxWidth - textWidth) / 2;
-}
-
 // Create HTML for title page and convert to PDF buffer (A4 landscape)
 async function createTitlePageHTML(page, lang, common, totalPages = 0) {
   const today = new Date().toLocaleDateString(lang === 'jp' ? 'ja-JP' : lang === 'ko' ? 'ko-KR' : 'en-US', {
@@ -334,124 +326,6 @@ async function mergePDFPages(pdfDoc, htmlPdfBuffer) {
   const htmlPdfDoc = await PDFDocument.load(htmlPdfBuffer);
   const [htmlPage] = await pdfDoc.copyPages(htmlPdfDoc, [0]);
   pdfDoc.addPage(htmlPage);
-}
-
-// Create title page
-async function createTitlePage(pdfDoc, role, font, translations) {
-  const page = pdfDoc.addPage([A4_WIDTH, A4_HEIGHT]);
-  const { common } = translations;
-
-  const centerX = A4_WIDTH / 2;
-  let y = A4_HEIGHT - 150;
-
-  // Title
-  const titleX = centerText(common.title, font, 40, A4_WIDTH);
-  page.drawText(common.title, {
-    x: titleX,
-    y: y,
-    size: 40,
-    font: font,
-    color: rgb(0, 0, 0),
-  });
-
-  y -= 100;
-
-  // Role name
-  const roleName = common.roles[role];
-  const roleX = centerText(roleName, font, 28, A4_WIDTH);
-  page.drawText(roleName, {
-    x: roleX,
-    y: y,
-    size: 28,
-    font: font,
-    color: rgb(0, 0, 0),
-  });
-
-  y -= 50;
-
-  // Subtitle
-  const subtitleX = centerText(common.subtitle, font, 16, A4_WIDTH);
-  page.drawText(common.subtitle, {
-    x: subtitleX,
-    y: y,
-    size: 16,
-    font: font,
-    color: rgb(0.3, 0.3, 0.3),
-  });
-
-  y -= 120;
-
-  // Developed by
-  const devByX = centerText(common.developedBy, font, 14, A4_WIDTH);
-  page.drawText(common.developedBy, {
-    x: devByX,
-    y: y,
-    size: 14,
-    font: font,
-    color: rgb(0.4, 0.4, 0.4),
-  });
-
-  y -= 40;
-
-  // Company name
-  const companyX = centerText(common.company, font, 22, A4_WIDTH);
-  page.drawText(common.company, {
-    x: companyX,
-    y: y,
-    size: 22,
-    font: font,
-    color: rgb(0, 0, 0),
-  });
-
-  y -= 80;
-
-  // Generated date
-  const today = new Date().toLocaleDateString('en-US', {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric',
-  });
-  const generatedText = `${common.generated}: ${today}`;
-  const genX = centerText(generatedText, font, 12, A4_WIDTH);
-  page.drawText(generatedText, {
-    x: genX,
-    y: y,
-    size: 12,
-    font: font,
-    color: rgb(0.5, 0.5, 0.5),
-  });
-
-  // Separator line
-  y -= 40;
-  page.drawLine({
-    start: { x: centerX - 200, y: y },
-    end: { x: centerX + 200, y: y },
-    thickness: 1,
-    color: rgb(0.7, 0.7, 0.7),
-  });
-
-  // Footer
-  y = 120;
-  const copyrightX = centerText(common.copyright, font, 10, A4_WIDTH);
-  page.drawText(common.copyright, {
-    x: copyrightX,
-    y: y,
-    size: 10,
-    font: font,
-    color: rgb(0.6, 0.6, 0.6),
-  });
-
-  y -= 30;
-  const platformX = centerText(common.platform, font, 10, A4_WIDTH);
-  page.drawText(common.platform, {
-    x: platformX,
-    y: y,
-    size: 10,
-    font: font,
-    color: rgb(0.6, 0.6, 0.6),
-  });
-
-  return page;
 }
 
 // Create table of contents page (HTML-based, A4 landscape)
@@ -646,92 +520,9 @@ async function createTableOfContentsHTML(page, pages, lang, translations, totalP
   }
 }
 
-// Create table of contents page (legacy pdf-lib version, not used)
-async function createTableOfContents(
-  pdfDoc,
-  pages,
-  font,
-  translations
-) {
-  const page = pdfDoc.addPage([A4_WIDTH, A4_HEIGHT]);
-  const { common } = translations;
-
-  let y = A4_HEIGHT - 100;
-  const centerX = A4_WIDTH / 2;
-
-  // Title
-  const tocWidth = font.widthOfTextAtSize(common.tableOfContents, 32);
-  page.drawText(common.tableOfContents, {
-    x: centerX - tocWidth / 2,
-    y: y,
-    size: 32,
-    font: font,
-    color: rgb(0, 0, 0),
-  });
-
-  y -= 80;
-
-  // Page listings (start from page 3 since title=1, toc=2)
-  let pageNum = 3;
-  for (const pageInfo of pages) {
-    const pageName = pageInfo.name;
-    const pageNumStr = String(pageNum);
-
-    // Draw page name
-    page.drawText(`${pageNum - 2}. ${pageName}`, {
-      x: 120,
-      y: y,
-      size: 14,
-      font: font,
-      color: rgb(0, 0, 0),
-    });
-
-    // Draw dots
-    const dotsX = 500;
-    page.drawText('.' .repeat(80), {
-      x: dotsX,
-      y: y,
-      size: 14,
-      font: font,
-      color: rgb(0.7, 0.7, 0.7),
-    });
-
-    // Draw page number
-    page.drawText(pageNumStr, {
-      x: A4_WIDTH - 150,
-      y: y,
-      size: 14,
-      font: font,
-      color: rgb(0, 0, 0),
-    });
-
-    y -= 30;
-    pageNum++;
-
-    // Add tabs/modals to count
-    if (pageInfo.tabs) {
-      pageNum += pageInfo.tabs.length;
-    }
-    if (pageInfo.modals) {
-      pageNum += pageInfo.modals.length;
-    }
-
-    // Start new page if needed
-    if (y < 100) {
-      pdfDoc.addPage([A4_WIDTH, A4_HEIGHT]);
-      y = A4_HEIGHT - 100;
-    }
-  }
-
-  return page;
-}
-
 // Create layout page with screenshot and description (HTML-based, NEW vertical layout for A4 landscape)
 async function createLayoutPageHTML(page, screenshotBuffer, pageName, pageDescription, pageNum, totalPages, lang, translations) {
   const { common } = translations;
-
-  // Convert screenshot buffer to base64
-  const screenshotBase64 = screenshotBuffer.toString('base64');
 
   // Build components list (max 3 items)
   const componentsHtml = pageDescription?.components
@@ -739,6 +530,12 @@ async function createLayoutPageHTML(page, screenshotBuffer, pageName, pageDescri
         .map(comp => `<li>${comp}</li>`)
         .join('')
     : '';
+
+  // Convert screenshot buffer to base64
+  const screenshotBase64 = screenshotBuffer.toString('base64');
+
+  // Screenshot image only
+  const screenshotHTML = `<img src="data:image/png;base64,${screenshotBase64}" alt="${pageName}" style="display:block;border:1.5px solid #bcbcbc;box-shadow:none;margin:0 auto;padding:0;max-width:100%;max-height:100%;" />`;
 
   const html = `
     <!DOCTYPE html>
@@ -786,23 +583,15 @@ async function createLayoutPageHTML(page, screenshotBuffer, pageName, pageDescri
         .screenshot-box {
           flex: 3;
           display: flex;
-          align-items: center;
+          align-items: flex-start;
           justify-content: center;
-          background: #fafafa;
-          border: 2px solid #e0e0e0;
-          border-radius: 8px;
-          padding: 8mm;
+          background: none;
+          border: none;
+          border-radius: 0;
+          padding: 0;
           min-height: 80mm;
           max-height: 120mm;
           box-sizing: border-box;
-        }
-        .screenshot-box img {
-          max-width: 100%;
-          max-height: 100%;
-          width: auto;
-          height: auto;
-          object-fit: contain;
-          display: block;
         }
         .desc-box {
           flex: 1;
@@ -826,11 +615,11 @@ async function createLayoutPageHTML(page, screenshotBuffer, pageName, pageDescri
       <div class="page">
         <div class="title-section">
           <div class="page-title">${pageName}</div>
-          <div class="page-number-top">페이지 ${pageNum} / ${totalPages}</div>
+          <div class="page-number-top">Page ${pageNum} / ${totalPages}</div>
         </div>
         <div class="main-section">
           <div class="screenshot-box">
-            <img src="data:image/png;base64,${screenshotBase64}" alt="${pageName}" />
+            ${screenshotHTML}
           </div>
           <div class="desc-box">
             ${pageDescription?.purpose ? `<div class="section"><div class="section-title">${common.purpose}</div><div class="section-content">${pageDescription.purpose}</div></div>` : ''}
@@ -847,22 +636,10 @@ async function createLayoutPageHTML(page, screenshotBuffer, pageName, pageDescri
     </html>
   `;
 
-  // 디버깅용 HTML 저장
-  try {
-    fs.writeFileSync(`debug-layout-${pageName.replace(/[^a-zA-Z0-9-_]/g, '_')}.html`, html, 'utf-8');
-  } catch (e) {
-    // ignore
-  }
-
   try {
     await page.setContent(html);
     await page.waitForLoadState('networkidle');
-    // 이미지가 완전히 로드될 때까지 대기 (.screenshot-box img)
-    await page.waitForFunction(() => {
-      const img = document.querySelector('.screenshot-box img');
-      return img && img.complete && img.naturalWidth > 0;
-    }, { timeout: 10000 });
-    await page.waitForTimeout(500);
+
     const pdfBuffer = await page.pdf({
       format: 'A4',
       landscape: true,
@@ -872,193 +649,13 @@ async function createLayoutPageHTML(page, screenshotBuffer, pageName, pageDescri
         bottom: '0mm',
         left: '0mm',
       },
-      printBackground: true,
-      preferCSSPageSize: true,
     });
+
     return pdfBuffer;
   } catch (error) {
-    console.log(`      ⚠ Error creating layout page HTML: ${error.message}`);
+    console.log(`  ⚠ Error creating layout page: ${error.message}`);
     return null;
   }
-}
-
-// Create layout page with screenshot and description
-async function createLayoutPage(
-  pdfDoc,
-  screenshotBuffer,
-  pageName,
-  pageDescription,
-  pageNum,
-  totalPages,
-  font,
-  translations
-) {
-  const page = pdfDoc.addPage([A4_WIDTH, A4_HEIGHT]);
-  const { common } = translations;
-
-  const leftWidth = A4_WIDTH * 0.62;
-  const rightX = leftWidth + 40;
-
-  try {
-    // Embed screenshot (left side 62%)
-    const screenshotImage = await pdfDoc.embedPng(screenshotBuffer);
-    const imgDims = screenshotImage.scale(0.5);
-
-    // Calculate dimensions to fit
-    const maxWidth = leftWidth - 100;
-    const maxHeight = A4_HEIGHT - 200;
-    let imgWidth = Math.min(imgDims.width, maxWidth);
-    let imgHeight = (imgWidth / imgDims.width) * imgDims.height;
-
-    if (imgHeight > maxHeight) {
-      imgHeight = maxHeight;
-      imgWidth = (imgHeight / imgDims.height) * imgDims.width;
-    }
-
-    page.drawImage(screenshotImage, {
-      x: 50 + (maxWidth - imgWidth) / 2,
-      y: A4_HEIGHT / 2 - imgHeight / 2,
-      width: imgWidth,
-      height: imgHeight,
-    });
-  } catch (error) {
-    console.log(`      ⚠ Could not embed screenshot: ${error.message}`);
-  }
-
-  // Right side - Description (38%)
-  let textY = A4_HEIGHT - 100;
-
-  // Page name (title)
-  const lines = wrapText(pageName, 30);
-  for (const line of lines) {
-    page.drawText(line, {
-      x: rightX,
-      y: textY,
-      size: 20,
-      font: font,
-      color: rgb(0, 0, 0),
-    });
-    textY -= 28;
-  }
-
-  textY -= 20;
-
-  if (pageDescription) {
-    // Purpose
-    page.drawText(common.purpose + ':', {
-      x: rightX,
-      y: textY,
-      size: 14,
-      font: font,
-      color: rgb(0, 0, 0),
-    });
-    textY -= 25;
-
-    const purposeLines = wrapText(pageDescription.purpose, 40);
-    for (const line of purposeLines) {
-      page.drawText(line, {
-        x: rightX + 10,
-        y: textY,
-        size: 11,
-        font: font,
-        color: rgb(0.2, 0.2, 0.2),
-      });
-      textY -= 18;
-    }
-
-    textY -= 15;
-
-    // Key Components
-    page.drawText(common.keyComponents + ':', {
-      x: rightX,
-      y: textY,
-      size: 14,
-      font: font,
-      color: rgb(0, 0, 0),
-    });
-    textY -= 25;
-
-    if (pageDescription.components) {
-      for (const component of pageDescription.components.slice(0, 4)) {
-        const componentLines = wrapText('• ' + component, 38);
-        for (const line of componentLines) {
-          page.drawText(line, {
-            x: rightX + 10,
-            y: textY,
-            size: 10,
-            font: font,
-            color: rgb(0.2, 0.2, 0.2),
-          });
-          textY -= 16;
-        }
-      }
-    }
-
-    textY -= 15;
-
-    // Role-specific
-    if (pageDescription.roleSpecific) {
-      page.drawText(common.roleSpecific + ':', {
-        x: rightX,
-        y: textY,
-        size: 14,
-        font: font,
-        color: rgb(0, 0, 0),
-      });
-      textY -= 25;
-
-      const roleLines = wrapText(pageDescription.roleSpecific, 40);
-      for (const line of roleLines) {
-        page.drawText(line, {
-          x: rightX + 10,
-          y: textY,
-          size: 11,
-          font: font,
-          color: rgb(0.2, 0.2, 0.2),
-        });
-        textY -= 18;
-      }
-    }
-  }
-
-  // Footer
-  const footerY = 40;
-  page.drawText(`${common.page} ${pageNum} ${common.of} ${totalPages}`, {
-    x: 60,
-    y: footerY,
-    size: 10,
-    font: font,
-    color: rgb(0.5, 0.5, 0.5),
-  });
-
-  page.drawText('APROFLEET', {
-    x: A4_WIDTH - 200,
-    y: footerY,
-    size: 10,
-    font: font,
-    color: rgb(0.5, 0.5, 0.5),
-  });
-
-  return page;
-}
-
-// Wrap text to fit width
-function wrapText(text, maxLength) {
-  const words = text.split(' ');
-  const lines = [];
-  let currentLine = '';
-
-  for (const word of words) {
-    if ((currentLine + word).length <= maxLength) {
-      currentLine += (currentLine ? ' ' : '') + word;
-    } else {
-      if (currentLine) lines.push(currentLine);
-      currentLine = word;
-    }
-  }
-  if (currentLine) lines.push(currentLine);
-
-  return lines;
 }
 
 // Capture page with tabs
