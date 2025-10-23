@@ -192,12 +192,14 @@ function loadTranslations(lang) {
 }
 
 // Create HTML for title page and convert to PDF buffer (A4 landscape)
-async function createTitlePageHTML(page, lang, common, totalPages = 0) {
+async function createTitlePageHTML(page, role, lang, common, totalPages = 0) {
   const today = new Date().toLocaleDateString(lang === 'jp' ? 'ja-JP' : lang === 'ko' ? 'ko-KR' : 'en-US', {
     year: 'numeric',
     month: 'long',
     day: 'numeric',
   });
+
+  const roleName = common.roles[role] || role;
 
   const html = `
     <!DOCTYPE html>
@@ -256,6 +258,14 @@ async function createTitlePageHTML(page, lang, common, totalPages = 0) {
           font-weight: 300;
         }
 
+        .role {
+          font-size: 28px;
+          font-weight: 600;
+          color: #1e40af;
+          margin: 20px 0;
+          letter-spacing: 0.5px;
+        }
+
         .company {
           font-size: 24px;
           margin-top: 15px;
@@ -287,6 +297,7 @@ async function createTitlePageHTML(page, lang, common, totalPages = 0) {
       <div class="content">
         <h1>${common.title}</h1>
         <div class="subtitle">${common.subtitle}</div>
+        <div class="role">${roleName}</div>
         <div class="developed-by">${common.developedBy}</div>
         <div class="company">${common.company}</div>
         <div class="generated">${common.generated}: ${today}</div>
@@ -385,6 +396,7 @@ async function createTableOfContentsHTML(page, pages, lang, translations, totalP
           color: #000;
           background: #fff;
           margin: 0;
+          position: relative;
         }
 
         .toc-title {
@@ -448,23 +460,20 @@ async function createTableOfContentsHTML(page, pages, lang, translations, totalP
           font-weight: 500;
         }
 
-        .toc-info {
-          font-size: 10px;
-          color: #999;
-          text-align: center;
-          margin-bottom: 20px;
-        }
-
         .page-footer {
+          position: absolute;
+          bottom: 0;
+          left: 30mm;
+          right: 30mm;
+          height: 14mm;
           display: flex;
           justify-content: space-between;
           align-items: center;
           font-size: 9px;
           color: #666;
-          padding-top: 10px;
           border-top: 1px solid #e0e0e0;
-          margin-top: auto;
-          height: 10mm;
+          padding-top: 3mm;
+          margin: 0;
         }
 
         .footer-left {
@@ -486,9 +495,6 @@ async function createTableOfContentsHTML(page, pages, lang, translations, totalP
             ${tocListHTML}
           </tbody>
         </table>
-      </div>
-      <div class="toc-info">
-        <div>${common.platform} - ${common.title}</div>
       </div>
       <div class="page-footer">
         <div class="footer-left">Page 2 / ${totalPages}</div>
@@ -802,7 +808,7 @@ async function generatePDFForRoleAndLanguage(
 
   // Generate all PDF pages while context is still open
   console.log(`\n  Generating title page...`);
-  const titlePdfBuffer = await createTitlePageHTML(page, lang, translations.common, totalPages);
+  const titlePdfBuffer = await createTitlePageHTML(page, role, lang, translations.common, totalPages);
 
   // Generate TOC page as HTML PDF while context is still open
   console.log(`  Generating table of contents...`);
@@ -863,7 +869,7 @@ async function generatePDFForRoleAndLanguage(
   }
 
   // Save PDF
-  const outputPath = path.join(OUTPUT_DIR, lang, `${role}.pdf`);
+  const outputPath = path.join(OUTPUT_DIR, lang, `aprofleet-backoffice-${role}-${lang}.pdf`);
   const pdfBytes = await pdfDoc.save();
   fs.writeFileSync(outputPath, pdfBytes);
 

@@ -1,22 +1,22 @@
 {
   "roles": {
-    "super-admin": "スーパー管理者",
-    "manufacturer": "メーカー",
-    "golf-course-admin": "ゴルフコース管理者",
-    "maintenance-staff": "メンテナンススタッフ",
-    "viewer": "ビューアー"
+    "super-admin": "システム管理者",
+    "manufacturer": "製造パートナー",
+    "golf-course-admin": "施設管理者",
+    "maintenance-staff": "保守担当者",
+    "viewer": "閲覧専用ユーザー"
   },
   "title": "APROFLEET バックオフィス",
-  "subtitle": "ユーザーガイド＆リファレンス",
+  "subtitle": "統合プラットフォームガイド",
   "developedBy": "開発・提供",
   "company": "VIASOFT.AI",
-  "generated": "生成日",
+  "generated": "文書作成日",
   "copyright": "ドキュメント © 2025 VIASOFT.AI",
   "platform": "APROFLEET プラットフォーム by DY Innovate Corporation",
   "tableOfContents": "目次",
   "page": "ページ",
   "of": "/",
-  "purpose": "目的",
-  "keyComponents": "主要コンポーネント",
-  "roleSpecific": "ロール固有機能"
+  "purpose": "概要",
+  "keyComponents": "コア機能",
+  "roleSpecific": "アクセス権限"
 }
