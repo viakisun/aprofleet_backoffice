@@ -78,11 +78,13 @@ const performanceMetrics = [
 </script>
 
 <style>
-.page-root {
+.analytics-page {
   background: #fff;
   color: #111;
   font-family: 'Noto Sans', Arial, sans-serif;
-  padding: 32px 40px 40px 40px;
+  padding: var(--space-6);
+  max-width: 1600px;
+  margin: 0 auto;
   min-height: 100vh;
 }
 
@@ -114,12 +116,27 @@ const performanceMetrics = [
   color: var(--color-white);
 }
 
+/* Page Header */
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--space-6);
+  padding-bottom: var(--space-4);
+  border-bottom: var(--border-width) solid var(--color-black);
+}
+
+.page-title {
+  font-size: var(--text-3xl);
+  font-weight: var(--font-medium);
+  letter-spacing: var(--tracking-tight);
+}
+
 .section-title {
-  font-size: 1.2rem;
-  font-weight: 700;
-  margin-bottom: 18px;
-  letter-spacing: 0.01em;
-  color: #111;
+  font-size: var(--text-lg);
+  font-weight: var(--font-medium);
+  letter-spacing: var(--tracking-wider);
+  margin-bottom: var(--space-3);
 }
 .summary-grid {
   display: flex;
@@ -173,7 +190,12 @@ const performanceMetrics = [
 }
 </style>
 
-<div class="page-root">
+<div class="analytics-page">
+  <!-- Page Header -->
+  <div class="page-header">
+    <h1 class="page-title">ANALYTICS</h1>
+  </div>
+
   <!-- Tab Navigation -->
   <div class="tabs-container">
     <button

@@ -581,7 +581,7 @@
 <style>
 	.deployment-page {
 		padding: var(--space-6);
-		max-width: 1800px;
+		max-width: 1600px;
 		margin: 0 auto;
 	}
 
