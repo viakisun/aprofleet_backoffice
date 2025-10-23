@@ -99,6 +99,9 @@
 		}
 	];
 
+	// Tab state
+	let activeTab: 'requests' | 'scheduled' | 'history' = 'requests';
+
 	let filterType: 'all' | 'scheduled' | 'repair' | 'inspection' | 'urgent' = 'all';
 	let filterStatus: 'all' | 'pending' | 'in_progress' | 'completed' = 'all';
 	let showNewTicketForm = false;
@@ -119,6 +122,19 @@
 	});
 
 	$: filteredTickets = tickets.filter(t => {
+		// Tab filtering
+		if (activeTab === 'requests') {
+			// Service Requests: pending or in_progress tickets
+			if (t.status !== 'pending' && t.status !== 'in_progress') return false;
+		} else if (activeTab === 'scheduled') {
+			// Scheduled Maintenance: scheduled type tickets
+			if (t.type !== 'scheduled') return false;
+		} else if (activeTab === 'history') {
+			// Service History: completed tickets
+			if (t.status !== 'completed') return false;
+		}
+
+		// Additional filtering
 		const matchesType = filterType === 'all' || t.type === filterType;
 		const matchesStatus = filterStatus === 'all' || t.status === filterStatus;
 		return matchesType && matchesStatus;
@@ -218,6 +234,31 @@
 					+ NEW TICKET
 				</button>
 			</div>
+		</div>
+
+		<!-- Tabs -->
+		<div class="tabs-container">
+			<button
+				class="tab-btn"
+				class:active={activeTab === 'requests'}
+				on:click={() => activeTab = 'requests'}
+			>
+				SERVICE REQUESTS
+			</button>
+			<button
+				class="tab-btn"
+				class:active={activeTab === 'scheduled'}
+				on:click={() => activeTab = 'scheduled'}
+			>
+				SCHEDULED
+			</button>
+			<button
+				class="tab-btn"
+				class:active={activeTab === 'history'}
+				on:click={() => activeTab = 'history'}
+			>
+				HISTORY
+			</button>
 		</div>
 
 		<!-- Statistics -->
@@ -570,6 +611,37 @@
 	}
 
 	.action-button.primary {
+		background: var(--color-black);
+		color: var(--color-white);
+	}
+
+	/* Tabs */
+	.tabs-container {
+		display: flex;
+		gap: 8px;
+		margin-bottom: 24px;
+		border-bottom: 2px solid var(--color-black);
+	}
+
+	.tab-btn {
+		background: var(--color-white);
+		border: 1px solid var(--color-black);
+		border-bottom: none;
+		padding: 12px 24px;
+		font-weight: 600;
+		font-size: var(--text-sm);
+		letter-spacing: var(--tracking-wide);
+		cursor: pointer;
+		transition: all 0.15s ease;
+		position: relative;
+		top: 2px;
+	}
+
+	.tab-btn:hover {
+		background: var(--color-gray-90);
+	}
+
+	.tab-btn.active {
 		background: var(--color-black);
 		color: var(--color-white);
 	}

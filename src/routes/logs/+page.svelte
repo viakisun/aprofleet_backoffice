@@ -15,7 +15,7 @@
 
 	// Filter state
 	let selectedLevel: string = 'all';
-	let selectedService: string = 'all';
+	let activeServiceTab: string = 'all'; // Changed from selectedService
 	let searchQuery: string = '';
 	let startDate: string = '';
 	let endDate: string = '';
@@ -78,8 +78,14 @@
 		// Level filter
 		if (selectedLevel !== 'all' && log.level !== selectedLevel) return false;
 
-		// Service filter
-		if (selectedService !== 'all' && log.service !== selectedService) return false;
+		// Service tab filter
+		if (activeServiceTab === 'all') {
+			// Show all services
+		} else if (activeServiceTab === 'api-server') {
+			if (log.service !== 'api-server') return false;
+		} else if (activeServiceTab === 'database') {
+			if (log.service !== 'database') return false;
+		}
 
 		// Search query
 		if (searchQuery && !log.message.toLowerCase().includes(searchQuery.toLowerCase()) &&
@@ -130,7 +136,7 @@
 
 	function clearFilters() {
 		selectedLevel = 'all';
-		selectedService = 'all';
+		activeServiceTab = 'all';
 		searchQuery = '';
 		startDate = '';
 		endDate = '';
@@ -238,6 +244,31 @@
 		</div>
 	</div>
 
+	<!-- Service Tabs -->
+	<div class="tabs-container">
+		<button
+			class="tab-btn"
+			class:active={activeServiceTab === 'all'}
+			on:click={() => activeServiceTab = 'all'}
+		>
+			ALL SERVICES
+		</button>
+		<button
+			class="tab-btn"
+			class:active={activeServiceTab === 'api-server'}
+			on:click={() => activeServiceTab = 'api-server'}
+		>
+			API SERVER
+		</button>
+		<button
+			class="tab-btn"
+			class:active={activeServiceTab === 'database'}
+			on:click={() => activeServiceTab = 'database'}
+		>
+			DATABASE
+		</button>
+	</div>
+
 	<!-- Filters -->
 	<div class="filters-section">
 		<div class="filters-row">
@@ -250,16 +281,6 @@
 					<option value="warn">Warning</option>
 					<option value="error">Error</option>
 					<option value="critical">Critical</option>
-				</select>
-			</div>
-
-			<div class="filter-group">
-				<label for="service-filter">SERVICE</label>
-				<select id="service-filter" bind:value={selectedService}>
-					<option value="all">All Services</option>
-					{#each services as service}
-						<option value={service}>{service.toUpperCase()}</option>
-					{/each}
 				</select>
 			</div>
 
@@ -472,6 +493,37 @@
 		width: 16px;
 		height: 16px;
 		cursor: pointer;
+	}
+
+	/* Tabs */
+	.tabs-container {
+		display: flex;
+		gap: 8px;
+		margin-bottom: 24px;
+		border-bottom: 2px solid var(--color-black);
+	}
+
+	.tab-btn {
+		background: var(--color-white);
+		border: 1px solid var(--color-black);
+		border-bottom: none;
+		padding: 12px 24px;
+		font-weight: 600;
+		font-size: var(--text-sm);
+		letter-spacing: var(--tracking-wide);
+		cursor: pointer;
+		transition: all 0.15s ease;
+		position: relative;
+		top: 2px;
+	}
+
+	.tab-btn:hover {
+		background: var(--color-gray-90);
+	}
+
+	.tab-btn.active {
+		background: var(--color-black);
+		color: var(--color-white);
 	}
 
 	/* Statistics */

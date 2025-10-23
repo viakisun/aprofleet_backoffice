@@ -53,15 +53,15 @@ const ACCOUNTS = {
         name: 'Maintenance',
         tabs: [
           {
-            selector: 'button:has-text("SERVICE REQUESTS")',
+            selector: 'button.tab-btn:has-text("SERVICE REQUESTS")',
             name: 'Service Requests',
           },
           {
-            selector: 'button:has-text("SCHEDULED")',
+            selector: 'button.tab-btn:has-text("SCHEDULED")',
             name: 'Scheduled Maintenance',
           },
           {
-            selector: 'button:has-text("HISTORY")',
+            selector: 'button.tab-btn:has-text("HISTORY")',
             name: 'Service History',
           },
         ],
@@ -71,23 +71,23 @@ const ACCOUNTS = {
         name: 'Analytics',
         tabs: [
           {
-            selector: 'button:has-text("FLEET OVERVIEW")',
+            selector: 'button.tab-btn:has-text("FLEET OVERVIEW")',
             name: 'Fleet Overview',
           },
           {
-            selector: 'button:has-text("USAGE TRENDS")',
+            selector: 'button.tab-btn:has-text("USAGE TRENDS")',
             name: 'Usage Trends',
           },
           {
-            selector: 'button:has-text("MAINTENANCE")',
+            selector: 'button.tab-btn:has-text("MAINTENANCE")',
             name: 'Maintenance Analytics',
           },
           {
-            selector: 'button:has-text("COST")',
+            selector: 'button.tab-btn:has-text("COST ANALYSIS")',
             name: 'Cost Analysis',
           },
           {
-            selector: 'button:has-text("PERFORMANCE")',
+            selector: 'button.tab-btn:has-text("PERFORMANCE")',
             name: 'Performance Metrics',
           },
         ],
@@ -98,9 +98,9 @@ const ACCOUNTS = {
         route: '/logs',
         name: 'Logs',
         tabs: [
-          { selector: 'button:has-text("ALL SERVICES")', name: 'All Services' },
-          { selector: 'button:has-text("API SERVER")', name: 'API Server' },
-          { selector: 'button:has-text("DATABASE")', name: 'Database' },
+          { selector: 'button.tab-btn:has-text("ALL SERVICES")', name: 'All Services' },
+          { selector: 'button.tab-btn:has-text("API SERVER")', name: 'API Server' },
+          { selector: 'button.tab-btn:has-text("DATABASE")', name: 'Database' },
         ],
       },
       { route: '/api-docs', name: 'API Documentation' },
@@ -108,16 +108,16 @@ const ACCOUNTS = {
         route: '/settings',
         name: 'Settings',
         tabs: [
-          { selector: 'button:has-text("PROFILE")', name: 'Profile' },
+          { selector: 'button.nav-item:has-text("ACCOUNT")', name: 'Profile' },
           {
-            selector: 'button:has-text("DISPLAY")',
+            selector: 'button.nav-item:has-text("DISPLAY")',
             name: 'Display Preferences',
           },
           {
-            selector: 'button:has-text("NOTIFICATIONS")',
+            selector: 'button.nav-item:has-text("NOTIFICATIONS")',
             name: 'Notifications',
           },
-          { selector: 'button:has-text("SECURITY")', name: 'Security' },
+          { selector: 'button.nav-item:has-text("SECURITY")', name: 'Security' },
         ],
       },
     ],
