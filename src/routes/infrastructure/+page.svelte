@@ -514,7 +514,7 @@
 <style>
 	.infrastructure-page {
 		padding: var(--space-6);
-		max-width: 1800px;
+		max-width: var(--content-max-width);
 		margin: 0 auto;
 	}
 

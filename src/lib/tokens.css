@@ -90,6 +90,11 @@
   --row-height: 36px;
   --input-height: 32px;
 
+  /* Content widths */
+  --content-max-width: 1600px;
+  --content-narrow: 900px;
+  --content-medium: 1200px;
+
   /* Z-index scale */
   --z-base: 0;
   --z-dropdown: 10;
